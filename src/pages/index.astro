@@ -1,0 +1,987 @@
+---
+const bookingEmail = "kanchan.dean@gmail.com"; // ← change to your email
+const whatsappNumber = "9653573328";        // ← change to your WhatsApp number
+
+const rooms = [
+  {
+    name: "Semi-Deluxe Room",
+    tagline: "On the ground floor, surrounded by nature, attached washroom, basic amneties",
+    guests: 2,
+    nights: "From ₹3,500 / night",
+    features: ["1 Double bed", "1 kitchenette", "Valley view"],
+    mood: "Intimate retreat",
+  },
+  {
+    name: "Premium Room cum Attic",
+    tagline: "Attached gallery, ancient wood house vibe next door, attached washroom and basic amneties",
+    guests: 5,
+    nights: "From ₹7,500 / night",
+    features: ["2 Double bed", "1 kitchenette", "Panoramic Valley view", "Nature walk", "Private Garden", "Bonfire access"],
+    mood: "Family escape",
+  },
+];
+
+const experiences = [
+  { icon: "🌲", title: "Forest Walks", desc: "Guided treks through ancient deodar forests at sunrise and dusk." },
+  { icon: "☁️", title: "Cloud Mornings", desc: "Sit on your deck as the valley fills with morning mist, with a cup of steaming coffee." },
+  { icon: "🔥", title: "Bonfire Nights", desc: "Wood-fired evenings under the stars with chai." },
+  { icon: "🌿", title: "Farm Meals", desc: "Breakfast and dinner daily cooked with ingredients from our kitchen garden (subject to availability)." },
+  { icon: "📵", title: "Digital Detox", desc: "Intentionally low connectivity, no TV or digital entertainment, Bring books, board games, not notifications." },
+  { icon: "🏔️", title: "Peak Sunrise", desc: "Pre-dawn view of a beautiful sunrise from the hilltop, snow capped peaks visible from our abode." },
+  { icon: "🏛️", title: "Hatu Peak", desc: "Wake up to breathtaking Himalayan views and a serene escape near Hatu Peak, where nature and tranquility meet." },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Alcove Nest — A mountain homestay hidden in the forest. Slow down, breathe deep, stay a while." />
+  <title>Alcove Nest · Mountain Homestay</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;0,800;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --forest:    #0E1A13;
+      --canopy:    #162218;
+      --moss:      #2A3D2E;
+      --fern:      #3E5C42;
+      --mist:      #8FAF94;
+      --fog:       #C4D4C6;
+      --parchment: #EDE8DF;
+      --ember:     #C8834A;
+      --ember-lt:  #E0A86E;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--forest);
+      color: var(--parchment);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+
+    /* Typography */
+    .font-serif { font-family: 'Bodoni Moda', Georgia, serif; }
+    .font-display { font-family: 'DM Serif Display', Georgia, serif; }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(14,26,19,0.95) 0%, transparent 100%);
+    }
+
+    .nav-logo {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--parchment);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fog);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--parchment); }
+
+    .btn-book-nav {
+      background: var(--ember);
+      color: var(--forest);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.4rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn-book-nav:hover { background: var(--ember-lt); }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 2.5rem 8rem;
+      overflow: hidden;
+    }
+
+    /* SVG mountain scene as background */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(14,26,19,0.3) 0%,
+        rgba(14,26,19,0.1) 40%,
+        rgba(14,26,19,0.75) 80%,
+        rgba(14,26,19,1) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 700px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mist);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: var(--mist);
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      line-height: 1;
+      font-weight: 400;
+      color: var(--parchment);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--ember-lt);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--fog);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--ember);
+      color: var(--forest);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      padding: 1rem 2.2rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--ember-lt);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      border: 1px solid rgba(196,212,198,0.3);
+      color: var(--fog);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      padding: 1rem 2.2rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--fog);
+      color: var(--parchment);
+      transform: translateY(-2px);
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--mist);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    @keyframes scrollDrop {
+      0%   { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(12px); opacity: 0; }
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 3rem;
+      background: linear-gradient(to bottom, var(--mist), transparent);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 50%;
+      background: var(--ember);
+      animation: scrollDrop 1.8s ease-in-out infinite;
+    }
+
+    /* Sections */
+    section { position: relative; }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    /* Section label */
+    .section-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mist);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 1.5rem;
+      height: 1px;
+      background: var(--mist);
+    }
+
+    /* Rooms */
+    #rooms {
+      padding: 8rem 0;
+      background: var(--canopy);
+    }
+
+    .rooms-header {
+      margin-bottom: 4rem;
+    }
+
+    .rooms-header h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--parchment);
+    }
+
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .room-card {
+      background: var(--moss);
+      border: 1px solid rgba(143,175,148,0.1);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .room-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(200,131,74,0.35);
+    }
+
+    .room-mood {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ember);
+      margin-bottom: 1rem;
+    }
+
+    .room-name {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--parchment);
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .room-tagline {
+      font-size: 0.9rem;
+      color: var(--mist);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .room-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.75rem;
+      flex: 1;
+    }
+
+    .room-features li {
+      font-size: 0.82rem;
+      color: var(--fog);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .room-features li::before {
+      content: '—';
+      color: var(--ember);
+      font-size: 0.7rem;
+    }
+
+    .room-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(143,175,148,0.12);
+    }
+
+    .room-price {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.1rem;
+      color: var(--ember-lt);
+    }
+
+    .btn-room {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--parchment);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(196,212,198,0.3);
+      padding-bottom: 1px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-room:hover {
+      color: var(--ember-lt);
+      border-color: var(--ember-lt);
+    }
+
+    /* Experiences */
+    #experiences {
+      padding: 8rem 0;
+      background: var(--forest);
+    }
+
+    .exp-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .exp-layout { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    .exp-header h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--parchment);
+      margin-bottom: 1.5rem;
+    }
+
+    .exp-header p {
+      font-size: 0.95rem;
+      color: var(--fog);
+      line-height: 1.9;
+      max-width: 380px;
+    }
+
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1rem;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid rgba(143,175,148,0.1);
+    }
+
+    .exp-icon { font-size: 1.2rem; line-height: 1.6; }
+
+    .exp-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1rem;
+      color: var(--parchment);
+      margin-bottom: 0.25rem;
+    }
+
+    .exp-desc {
+      font-size: 0.82rem;
+      color: var(--mist);
+      line-height: 1.7;
+    }
+
+    /* Quote */
+    .quote-section {
+      padding: 6rem 0;
+      background: var(--canopy);
+      text-align: center;
+    }
+
+    blockquote {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--parchment);
+      line-height: 1.4;
+      max-width: 800px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .quote-attr {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mist);
+    }
+
+    /* Location */
+    #location {
+      padding: 8rem 0;
+      background: var(--forest);
+    }
+
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .location-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    .location-grid h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--parchment);
+      margin-bottom: 1.5rem;
+    }
+
+    .location-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .location-detail {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .loc-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ember);
+      min-width: 90px;
+      padding-top: 0.1rem;
+    }
+
+    .loc-value {
+      font-size: 0.9rem;
+      color: var(--fog);
+    }
+
+    /* Map placeholder */
+    .map-box {
+      background: var(--moss);
+      border: 1px solid rgba(143,175,148,0.15);
+      border-radius: 1rem;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.75rem;
+      color: var(--mist);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* SVG topographic lines in map box */
+    .map-topo {
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+    }
+
+    /* Book CTA */
+    #book {
+      padding: 10rem 0;
+      background: var(--canopy);
+      text-align: center;
+    }
+
+    #book h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      color: var(--parchment);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    #book p {
+      color: var(--fog);
+      font-size: 1rem;
+      max-width: 480px;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+    }
+
+    .book-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--forest);
+      border-top: 1px solid rgba(143,175,148,0.1);
+      padding: 3rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.1rem;
+      color: var(--parchment);
+    }
+
+    .footer-right {
+      font-size: 0.75rem;
+      color: var(--mist);
+      letter-spacing: 0.08em;
+    }
+
+    /* Fade in animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in { animation: fadeUp 0.9s ease forwards; }
+    .delay-1 { animation-delay: 0.15s; opacity: 0; }
+    .delay-2 { animation-delay: 0.3s;  opacity: 0; }
+    .delay-3 { animation-delay: 0.5s;  opacity: 0; }
+    .delay-4 { animation-delay: 0.7s;  opacity: 0; }
+
+    /* Mobile nav */
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+      .hero { padding: 0 1.25rem 6rem; }
+      .section-inner { padding: 0 1.25rem; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Alcove Nest</a>
+    <ul class="nav-links">
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#experiences">Experiences</a></li>
+      <li><a href="#location">Find Us</a></li>
+      <li>
+        <a
+          href={`mailto:${bookingEmail}?subject=Booking%20enquiry%20–%20Alcove%20Nest`}
+          class="btn-book-nav"
+        >
+          Book a stay
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <!-- Mountain SVG scene -->
+    <svg class="hero-bg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Sky gradient -->
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="#060F09"/>
+          <stop offset="60%" stop-color="#0F2415"/>
+          <stop offset="100%" stop-color="#1A3520"/>
+        </linearGradient>
+        <linearGradient id="moonGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" id="moonGlow" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stop-color="#C8834A" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#C8834A" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="mglow" cx="72%" cy="18%" r="25%">
+          <stop offset="0%" stop-color="#C8834A" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#C8834A" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <rect width="1440" height="900" fill="url(#sky)"/>
+
+      <!-- Moon glow -->
+      <ellipse cx="1030" cy="160" rx="200" ry="200" fill="url(#mglow)"/>
+      <!-- Moon -->
+      <circle cx="1030" cy="160" r="38" fill="#EDE8DF" opacity="0.92"/>
+      <circle cx="1048" cy="148" r="34" fill="#0A1A0F" opacity="0.88"/>
+
+      <!-- Stars -->
+      <g opacity="0.7" fill="#EDE8DF">
+        <circle cx="120"  cy="80"  r="1.2"/>
+        <circle cx="245"  cy="55"  r="0.9"/>
+        <circle cx="380"  cy="120" r="1.4"/>
+        <circle cx="510"  cy="45"  r="0.8"/>
+        <circle cx="630"  cy="95"  r="1.1"/>
+        <circle cx="760"  cy="30"  r="1.3"/>
+        <circle cx="870"  cy="75"  r="0.8"/>
+        <circle cx="1150" cy="55"  r="1.0"/>
+        <circle cx="1270" cy="100" r="1.2"/>
+        <circle cx="1370" cy="40"  r="0.9"/>
+        <circle cx="200"  cy="160" r="0.7"/>
+        <circle cx="450"  cy="180" r="0.8"/>
+        <circle cx="700"  cy="140" r="0.6"/>
+        <circle cx="1200" cy="170" r="0.9"/>
+      </g>
+
+      <!-- Far mountains (darkest, tallest) -->
+      <polygon points="0,580 160,260 320,420 480,180 640,380 800,200 960,360 1120,150 1280,320 1440,240 1440,900 0,900" fill="#0A1A0E" opacity="0.95"/>
+
+      <!-- Mid mountains -->
+      <polygon points="0,700 200,440 400,560 560,350 720,520 900,380 1080,500 1260,360 1440,480 1440,900 0,900" fill="#0D2016" opacity="0.97"/>
+
+      <!-- Near ridge with trees -->
+      <polygon points="0,780 100,660 180,700 260,620 340,680 420,610 500,670 580,590 660,650 740,600 820,650 900,580 980,640 1060,600 1140,660 1220,610 1300,660 1380,630 1440,660 1440,900 0,900" fill="#0E1A13"/>
+
+      <!-- Pine silhouettes on the ridge -->
+      <g fill="#080F0A">
+        {[80, 160, 230, 310, 410, 500, 570, 650, 730, 810, 900, 990, 1060, 1150, 1240, 1330, 1400].map((x, i) => (
+          <polygon points={`${x},${640 + (i%3)*15} ${x+14},${740 + (i%3)*15} ${x-14},${740 + (i%3)*15}`}/>
+        ))}
+      </g>
+
+      <!-- Cabin warm light glow -->
+      <ellipse cx="580" cy="730" rx="80" ry="30" fill="#C8834A" opacity="0.18"/>
+      <!-- Cabin window lights -->
+      <rect x="562" y="710" width="12" height="9" rx="1" fill="#FFDAA0" opacity="0.85"/>
+      <rect x="580" y="710" width="12" height="9" rx="1" fill="#FFDAA0" opacity="0.85"/>
+
+      <!-- Mist layer -->
+      <ellipse cx="720" cy="820" rx="800" ry="60" fill="#162218" opacity="0.6"/>
+    </svg>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow fade-in">Himachal Pradesh · 2,400m elevation</p>
+      <h1 class="fade-in delay-1">
+        Where the <em>forest</em><br/>holds its breath
+      </h1>
+      <p class="hero-sub fade-in delay-2">
+        Alcove Nest is a small mountain homestay tucked into the deodar forests above the valley. Three rooms. No crowds. Come to disappear for a while.
+      </p>
+      <div class="hero-ctas fade-in delay-3">
+        <a href="#rooms" class="btn-primary">View rooms</a>
+        <a
+          href={`https://wa.me/${whatsappNumber}?text=Hi!%20I%27d%20like%20to%20enquire%20about%20a%20stay%20at%20Alcove%20Nest`}
+          target="_blank"
+          rel="noopener"
+          class="btn-ghost"
+        >
+          WhatsApp us
+        </a>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+
+  </section>
+
+  <!-- ROOMS -->
+  <section id="rooms">
+    <div class="section-inner">
+      <div class="rooms-header">
+        <p class="section-label">The rooms</p>
+        <h2>Three rooms.<br/>Each a world of its own.</h2>
+      </div>
+      <div class="rooms-grid">
+        {rooms.map((room) => (
+          <div class="room-card">
+            <p class="room-mood">{room.mood}</p>
+            <h3 class="room-name">{room.name}</h3>
+            <p class="room-tagline">{room.tagline}</p>
+            <ul class="room-features">
+              {room.features.map(f => <li>{f}</li>)}
+            </ul>
+            <div class="room-footer">
+              <span class="room-price">{room.nights}</span>
+              <a
+                href={`mailto:${bookingEmail}?subject=Booking%20enquiry%20–%20${encodeURIComponent(room.name)}`}
+                class="btn-room"
+              >
+                Enquire →
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCES -->
+  <section id="experiences">
+    <div class="section-inner">
+      <div class="exp-layout">
+        <div class="exp-header">
+          <p class="section-label">While you're here</p>
+          <h2>Slow days.<br/>Mountain ways.</h2>
+          <p>We don't do itineraries. We do mornings with no agenda, afternoons with nowhere to be, and evenings that stretch long into the dark.</p>
+          <br/>
+          <p>But when you're ready to wander — here's what the mountain offers.</p>
+        </div>
+        <div class="exp-list">
+          {experiences.map(e => (
+            <div class="exp-item">
+              <div class="exp-icon">{e.icon}</div>
+              <div>
+                <div class="exp-title">{e.title}</div>
+                <div class="exp-desc">{e.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <div class="section-inner">
+      <blockquote>
+        "The mountains are calling<br/>and I must go."
+      </blockquote>
+      <p class="quote-attr">— John Muir</p>
+    </div>
+  </div>
+
+  <!-- LOCATION -->
+  <section id="location">
+    <div class="section-inner">
+      <div class="location-grid">
+        <div>
+          <p class="section-label">Getting here</p>
+          <h2>Hidden on purpose.<br/>Worth every turn.</h2>
+          <p style="color: var(--fog); font-size: 0.95rem; line-height: 1.9; margin-bottom: 1rem;">
+            We're nestled in the upper reaches of the valley, accessible by a 30-minute drive from the main town followed by a short scenic walk. The path in is part of the experience.
+          </p>
+          <div class="location-details">
+            <div class="location-detail">
+              <span class="loc-label">Nearest town</span>
+              <span class="loc-value">Narkanda, Himachal Pradesh</span>
+            </div>
+            <div class="location-detail">
+              <span class="loc-label">Elevation</span>
+              <span class="loc-value">2,400 m above sea level</span>
+            </div>
+            <div class="location-detail">
+              <span class="loc-label">From Shimla</span>
+              <span class="loc-value">~100 km · 3-4 hours by road</span>
+            </div>
+            <div class="location-detail">
+              <span class="loc-label">Best season</span>
+              <span class="loc-value">March–June · Sept–Nov</span>
+            </div>
+            <div class="location-detail">
+              <span class="loc-label">Directions</span>
+              <span class="loc-value">Shared on booking confirmation</span>
+            </div>
+            <div class="location-detail">
+              <span class="loc-label">Please Note</span>
+              <span class="loc-value">Road may close down during winter months, so please check availability and weather condition before traveling.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Topographic map illustration -->
+        <div class="map-box">
+          <svg class="map-topo" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#8FAF94" stroke-width="0.8">
+              <ellipse cx="200" cy="160" rx="180" ry="140"/>
+              <ellipse cx="200" cy="160" rx="155" ry="118"/>
+              <ellipse cx="200" cy="160" rx="128" ry="96"/>
+              <ellipse cx="200" cy="158" rx="102" ry="76"/>
+              <ellipse cx="200" cy="156" rx="78" ry="58"/>
+              <ellipse cx="200" cy="154" rx="56" ry="42"/>
+              <ellipse cx="200" cy="152" rx="36" ry="28"/>
+              <ellipse cx="200" cy="150" rx="18" ry="14"/>
+            </g>
+            <!-- Peak marker -->
+            <circle cx="200" cy="150" r="4" fill="#C8834A" opacity="0.9"/>
+            <line x1="200" y1="146" x2="200" y2="120" stroke="#C8834A" stroke-width="1" opacity="0.6"/>
+            <text x="200" y="114" font-size="9" fill="#EDE8DF" text-anchor="middle" font-family="DM Sans, sans-serif" opacity="0.8">Alcove Nest</text>
+          </svg>
+          <span style="position:relative; z-index:1; font-size:0.7rem; letter-spacing:0.14em; color: var(--mist);">Topographic location</span>
+          <span style="position:relative; z-index:1; font-size:0.65rem; letter-spacing:0.1em; color: var(--fern);">Exact coordinates on booking</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK CTA -->
+  <section id="book">
+    <div class="section-inner">
+      <p class="section-label" style="justify-content:center;">Ready when you are</p>
+      <h2>Book your<br/><em style="font-style:italic; color: var(--ember-lt);">alcove</em></h2>
+      <p>
+        Write to us with your dates and number of guests. We'll get back within a few hours with availability and what to expect.
+      </p>
+      <div class="book-ctas">
+        <a
+          href={`mailto:${bookingEmail}?subject=Booking%20enquiry%20–%20Alcove%20Nest&body=Hi!%20I%27d%20like%20to%20book%20a%20stay.%0A%0ADates%3A%0AGuests%3A%0ARoom%20preference%3A%0A%0ALooking%20forward%20to%20hearing%20from%20you!`}
+          class="btn-primary"
+        >
+          Email us
+        </a>
+        <a
+          href={`https://wa.me/${whatsappNumber}?text=Hi!%20I%27d%20like%20to%20book%20a%20stay%20at%20Alcove%20Nest.%20My%20dates%20are%3A`}
+          target="_blank"
+          rel="noopener"
+          class="btn-ghost"
+          style="display:flex; align-items:center; gap:0.5rem;"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Alcove Nest</div>
+    <div class="footer-right">
+      Himachal Pradesh &nbsp;·&nbsp; {new Date().getFullYear()} &nbsp;·&nbsp;
+    </div>
+  </footer>
+
+</body>
+</html>
